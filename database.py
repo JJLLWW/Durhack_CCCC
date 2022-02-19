@@ -19,23 +19,23 @@ class user:
         self.all = [self.id, self.name, self.Pass, self.langid, self.email]
 
 def add_user(Id, Name, Pass, Langid, Email):
-    exist_name = ""
     cursor.execute("""
         SELECT NAME FROM USER where NAME = ?
     """, [Name])
+    # if there is an entry already we don't do anything
     for row in cursor:
-        exist_name = (row[0])
-    if exist_name != "":
-        cursor.execute("""
-        INSERT INTO USER (USERID, NAME, PASSWORD, LANGUAGEID, EMAIL) VALUES(?, ?, ?, ?, ?)
-        """, [Id, Name, Pass, Langid, Email])  
-        print("Done")
-    else:
-        print("already exists")
+        print(f"{Name} already in table")
+        return
+    cursor.execute("""
+    INSERT INTO USER (USERID, NAME, PASSWORD, LANGUAGEID, EMAIL) VALUES(?, ?, ?, ?, ?)
+    """, [Id, Name, Pass, Langid, Email])  
+    print("Done")
     
 #add_user(234, "Olivia", "olivia", "45456", "@olivia.com")   
 add_user(0, 'name2', 'pasass', 0, 'email.com')
 add_user(0, 'name', 'pasass2', 0, 'email.com')
+add_user(0, 'name', 'pasass2', 0, 'email.com')
+
 
 def get_user(name):
     cursor.execute("""
@@ -50,9 +50,10 @@ def verify_user(name, password):
     exist_name = ""
     real_password = ""
     cursor.execute("""
-    SELECT NAME FROM USER where NAME = ?
+        SELECT NAME FROM USER where NAME = ?
     """, [name])
     print(name)
+    print(cursor.fetchall())
     for row in cursor:
         print("in")
         exist_name = (row[0])
@@ -69,6 +70,7 @@ def verify_user(name, password):
 
 verify_user("name2", "pasass")
 
+print(get_user())
 
 #usr = get_user("name2")
 #print(usr.all)

@@ -1,2 +1,4 @@
 To Jack-Jack:
 Screw You, here is your pip command: pip3 install flask_session
+
+Make sure your vscode is python 3.8.8

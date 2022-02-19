@@ -1,0 +1,2 @@
+To Jack-Jack:
+Screw You, here is your pip command: pip3 install flask_session

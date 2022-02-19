@@ -24,13 +24,11 @@ def add_user(Id, Name, Pass, Langid, Email):
     """, [Name])
     # if there is an entry already we don't do anything
     for row in cursor:
-        print(f"{Name} already in table")
         return
     cursor.execute("""
     INSERT INTO USER (USERID, NAME, PASSWORD, LANGUAGEID, EMAIL) VALUES(?, ?, ?, ?, ?)
     """, [Id, Name, Pass, Langid, Email])  
-    print("Done")
-    
+
 #add_user(234, "Olivia", "olivia", "45456", "@olivia.com")   
 add_user(0, 'name2', 'pasass', 0, 'email.com')
 add_user(0, 'name', 'pasass2', 0, 'email.com')
@@ -46,34 +44,40 @@ def get_user(name):
         newusr = user(row[0], row[1], row[2], row[3], row[4])
         return newusr
 
+SUCCESS, ERR_NOUSR, ERR_WRONGPASS = 0, 1, 2
+def errmsg_from_code(code):
+    if code == SUCCESS:
+        print("success")
+    elif code == ERR_NOUSR:
+        print("no user")
+    elif code == ERR_WRONGPASS:
+        print("wrong password")
+
 def verify_user(name, password):
-    exist_name = ""
-    real_password = ""
+    real_password = None
     cursor.execute("""
         SELECT NAME FROM USER where NAME = ?
     """, [name])
     print(name)
-    print(cursor.fetchall())
     for row in cursor:
-        print("in")
-        exist_name = (row[0])
-    print(exist_name)
-    if exist_name != "":
+        # if the name exists, check the password
         print("exist")
+        exist_name = (row)
         cursor.execute("""
-        SELECT NAME FROM USER where PASSWORD = ?
-        """, [password])
-        print(password)
-    else:
-        return False
-        print("no")
+        SELECT PASSWORD FROM USER where NAME = ?
+        """, [name])
+        for row in cursor:
+            real_password = row[0]
+            print(f"password was {real_password}")
+        if password == real_password:
+            return SUCCESS
+        else:
+            return ERR_WRONGPASS
+    return ERR_NOUSR
 
-verify_user("name2", "pasass")
-
-print(get_user())
+code = verify_user("name2", "pasass")
+errmsg_from_code(code)
 
 #usr = get_user("name2")
 #print(usr.all)
-
-print("hiiiiiiii")
 

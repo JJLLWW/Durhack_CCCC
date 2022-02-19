@@ -16,7 +16,12 @@ def hello_world():
     return render_template("chat.html")
 
 @socketio.on('join_chat')
-def test_join():
-    print("Ysadbadj")
+def join():
+    print("use")
 
-app.run()
+@socketio.on('msg_sent')
+def msg_sent(body):
+    print("sent message", str(body))
+
+if __name__ == "__main__":
+    app.run()

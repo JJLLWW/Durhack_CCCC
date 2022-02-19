@@ -19,7 +19,7 @@
             <textarea style="resize:none" id="newMessage" name="newMessage" rows="4" cols="50" autofocus placeholder="Enter your message here...">
             </textarea>
         </div>
-        <button class="btn btn-success" type="submit">Send</button>
+        <button class="btn btn-success" type="submit" id="btn-msg">Send</button>
     </form>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.js"></script>
     <script>
@@ -29,5 +29,12 @@
     socket.on("connect", function () {
         socket.emit('join_chat')
     });
+
+    var btn = document.getElementById("btn-msg");
+    btn.addEventListener("click", function() {
+        console.log("button clicked")
+        var msg_txt = document.getElementById("newMessage").value
+        socket.emit('msg_sent', {message: msg_txt})
+    })
     </script>
 {% endblock %}

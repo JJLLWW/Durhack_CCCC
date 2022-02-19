@@ -7,24 +7,18 @@
 {% block main %}
     <div class="chatbox">
         <br>
+        Your conversation:
         <br>
-        Your conversation will appear here.
-    </div>
-    <form>
-        
-    </form>
-    <label for="newMessage">Input your message:</label>
-    <div>
-        <textarea style="resize:none" id="newMessage"name="newMessage" rows="4" cols="50" autofocus placeholder="Enter your message here...">
+        <textarea id="currentConvo" name="currentConvo" cols="100"></textarea>
         </textarea>
     </div>
-    <script>
-        tinymce.init({
-          selector: "#mytextarea",
-          plugins: "emoticons",
-          toolbar: "emoticons",
-          toolbar_location: "bottom",
-          menubar: false
-        });
-      </script>
+    <br>
+    <label for="newMessage">Input your message:</label>
+    <form action="/sendMessage" method="post">
+        <div>
+            <textarea style="resize:none" id="newMessage"name="newMessage" rows="4" cols="50" autofocus placeholder="Enter your message here...">
+            </textarea>
+        </div>
+        <button class="btn btn-success" type="submit">Send</button>
+    </form>
 {% endblock %}

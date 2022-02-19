@@ -2,17 +2,17 @@
 
 <html lang="en">
 	<head>
-		<!-- Setting up the sizez, references, stylesheets and bootstraps -->
+		<!-- Setting up the size, references, stylesheets and bootstraps -->
 		<meta charset="utf-8">
         	<meta name="viewport" content="initial-scale=1, width=device-width">
 		<link href="/static/style.css" rel="stylesheet">
 		<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
-		<title>Holiday Planner: {% block title %}{% endblock %}</title>
+		<title>CCCC: {% block title %}{% endblock %}</title>
 	</head>
 	<body style="text-align: center;">
 		<!-- Navigation bar and options -->
-		<nav class="navbar navbar-expand-md navbar-light bg-light border">
-            		<a class="navbar-brand" href="/" style="font-weight:bold"><span style="color:#55f">Holiday</span><span style="color:#f33"> Planner!</span></a>
+			<nav class="navbar navbar-expand-md navbar-light bg-light border">
+            		<a class="navbar-brand" href="/" style="font-weight:bold"><span style="font-weight: bold;">CCCC</span></a>
             		<button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbar" data-toggle="collapse" type="button">
                 		<span class="navbar-toggler-icon"></span>
             		</button>
@@ -34,17 +34,20 @@
         	</nav>
 		<!-- Flashed messages -->
 		<div>
-            {% for message in get_flashed_messages() %}
-            <div class="alert alert-primary border text-center" role="alert">
-             		{{ message }}
-            </div>
-        	{% endfor %}
+			<h1>CCCC: Connecting Countries via Continental Chat</h1>
+			{% if get_flashed_messages() != None %}
+            	{% for message in get_flashed_messages() %}
+            	<div class="alert alert-success" role="alert">
+            	 		{{ message }}
+            	</div>
+        		{% endfor %}
+			{% endif %}
         </div>
 		<main>
 			{% block main%}{% endblock %}
 		</main>
 		<footer style="font-size:small; color:#777; text-align: center">
-			<p>Created by Jeremy Roy.</p>
+			<p>Created by Samuel Leung, Jack Write, Olivia Stubbs, Dravin Gupta and Jeremy Roy. For DurHack 2022.</p>
 			<p>Created using Python 3.8.3, HTML, CSS and Flask.</p>
 		</footer>
 	</body>

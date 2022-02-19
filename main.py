@@ -5,9 +5,9 @@ con = sqlite3.connect("database.db")
 cursor = con.cursor()
 db.create_tables(cursor)
 
-db.add_user( 'name2', 'pasass', 0, 'email.com', cursor)
-db.add_user( 'name', 'pasass2', 0, 'email.com', cursor)
-db.add_user( 'name', 'pasass2', 0, 'email.com', cursor)
+db.add_user( 'name2', 'pasass', "horse", 0, 'email.com', cursor)
+db.add_user( 'name', 'pasass2', "horse", 0, 'email.com', cursor)
+db.add_user( 'name', 'pasass2', "horse", 0, 'email.com', cursor)
 
 db.add_message("user2", "user1", "text", cursor)
 db.add_message("user1", "user2", "texts", cursor)

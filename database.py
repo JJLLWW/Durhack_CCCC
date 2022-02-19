@@ -1,12 +1,14 @@
 from ast import Pass
 from collections import namedtuple
 import sqlite3
+from sys import prefix
 
 def create_tables(cursor):
     cursor.execute("""
-    CREATE TABLE IF NOT EXISTS U
+    CREATE TABLE IF NOT EXISTS US
             (NAME TEXT,
             PASSWORD TEXT,
+            PREFERENCES TEXT,
             LANGUAGEID INTEGER,
             EMAIL TEXT);
     """)
@@ -21,17 +23,18 @@ def create_tables(cursor):
 
 
 class user:
-    def __init__(self, name, password, langid, email):
+    def __init__(self, name, password, pref, langid, email):
         self.name = name
         self.Pass = password
+        self.Pref = pref
         self.langid = langid
         self.email = email
         self.all = [self.name, self.Pass, self.langid, self.email]
 
-def add_user(Name, Pass, Langid, Email, cursor):
+def add_user(Name, Pass, Pref, Langid, Email, cursor):
     exist_name = ""
     cursor.execute("""
-        SELECT NAME FROM U where NAME = ?
+        SELECT NAME FROM US where NAME = ?
     """, [Name])
     # if there is an entry already we don't do anything
     for row in cursor:
@@ -39,8 +42,8 @@ def add_user(Name, Pass, Langid, Email, cursor):
         exist_name = (row)
     if exist_name == "":
         cursor.execute("""
-        INSERT INTO U (NAME, PASSWORD, LANGUAGEID, EMAIL) VALUES(?, ?, ?, ?)
-        """, [Name, Pass, Langid, Email])  
+        INSERT INTO US (NAME, PASSWORD, PREFERENCES, LANGUAGEID, EMAIL) VALUES(?, ?, ?, ?, ?)
+        """, [Name, Pass, Pref, Langid, Email])  
     else:
         print("user already exists")
 
@@ -53,11 +56,11 @@ def add_message(user1, user2, text, cursor):
 
 def get_user(name, cursor):
     cursor.execute("""
-        SELECT * FROM U where NAME = ?
+        SELECT * FROM US where NAME = ?
     """, [name])
     result = ""
     for row in cursor:
-        newusr = user(row[0], row[1], row[2], row[3])
+        newusr = user(row[0], row[1], row[2], row[3], row[4])
         return newusr
 
 def get_message(user1, user2, cursor):
@@ -104,13 +107,13 @@ def errmsg_from_code(code):
 def verify_user(name, password, cursor):
     real_password = None
     cursor.execute("""
-        SELECT NAME FROM U where NAME = ?
+        SELECT NAME FROM US where NAME = ?
     """, [name])
     print(name)
     for row in cursor:
         # if the name exists, check the password
         cursor.execute("""
-        SELECT PASSWORD FROM U where NAME = ?
+        SELECT PASSWORD FROM US where NAME = ?
         """, [name])
         for row in cursor:
             real_password = row[0]

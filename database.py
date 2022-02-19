@@ -58,7 +58,7 @@ def get_user(name, cursor):
     cursor.execute("""
         SELECT * FROM US where NAME = ?
     """, [name])
-    result = ""
+    #result = ""
     for row in cursor:
         newusr = user(row[0], row[1], row[2], row[3], row[4])
         return newusr
@@ -68,6 +68,8 @@ def get_message(user1, user2, cursor):
     SELECT NUMBER FROM M where (SENDER,RECEIVER) = (?, ?) 
     """, [user1, user2])
     result = []
+    
+
     for row in cursor:
         result.append(row)
 
@@ -88,6 +90,7 @@ def get_message(user1, user2, cursor):
         cursor.execute(""" 
         SELECT SENDER, RECEIVER, MESSAGE FROM M where (NUMBER) = (?) 
         """, [num])
+        
         for row in cursor:
            conversation.append(row)
 
@@ -105,13 +108,24 @@ def errmsg_from_code(code):
         print("wrong password")
 
 def verify_user(name, password, cursor):
-    real_password = None
+    print("verify")
+    real_password = ""
+    exist_name = ""
     cursor.execute("""
-        SELECT NAME FROM US where NAME = ?
+        SELECT * FROM US where NAME = (?)
     """, [name])
-    print(name)
-    for row in cursor:
+    #print(name)
+    r=cursor.fetchall()
+    print(r,"cur")
+    for row in r:
+        print(row)
         # if the name exists, check the password
+        exist_name = row
+        print("exist = ", exist_name)
+    if exist_name == "":
+        print("Not a username")
+        return ERR_NOUSR
+    else:
         cursor.execute("""
         SELECT PASSWORD FROM US where NAME = ?
         """, [name])
@@ -119,10 +133,14 @@ def verify_user(name, password, cursor):
             real_password = row[0]
             print(f"password was {real_password}")
         if password == real_password:
+            print("found")
             return SUCCESS
         else:
             return ERR_WRONGPASS
-    return ERR_NOUSR
+    
+
+        
+        
 
 
 

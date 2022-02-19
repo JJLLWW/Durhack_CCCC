@@ -1,4 +1,5 @@
 import time
+import googletrans
 from googletrans import Translator
 translator = Translator()
 
@@ -9,7 +10,7 @@ grams = ["hello my name is Olivia."]
 for g in grams:
     time.sleep(10)
     translated_text.append(
-        translator.translate(g, dest='es', src='en')
+        translator.translate(g, dest='fr', src='en')
     )
 
 for t in translated_text:
@@ -17,3 +18,6 @@ for t in translated_text:
         'English: ', t.origin, ' -----> ',
         'French: ', t.text
     )
+
+
+#print(googletrans.languages)

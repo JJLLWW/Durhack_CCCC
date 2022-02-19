@@ -5,7 +5,7 @@
 		<!-- Setting up the size, references, stylesheets and bootstraps -->
 		<meta charset="utf-8">
         	<meta name="viewport" content="initial-scale=1, width=device-width">
-		<link href="/static/style.css" rel="stylesheet">
+		<link href="/static(css)/style.css" rel="stylesheet">
 		<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
 		<title>CCCC: {% block title %}{% endblock %}</title>
 	</head>
@@ -43,6 +43,7 @@
         		{% endfor %}
 			{% endif %}
         </div>
+		<!-- Main content for any page inheriting this page template. -->
 		<main>
 			{% block main%}{% endblock %}
 		</main>

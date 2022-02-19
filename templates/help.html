@@ -8,30 +8,6 @@
             display: inline-block;
         }
     </style>
-    <script>
-        function ShowHelp() {
-            var help = document.getElementByName("help");
-            var settings = document.getElementsByName("settings");
-            if (help.style.display === "none") {
-                help.style.display = "block";
-                settings.style.display = "none";
-            } else {
-                help.style.display = "none";
-                settings.style.display = "block";
-            }
-        }
-        function ShowSettings() {
-            var help = document.getElementByName("help");
-            var settings = document.getElementsByName("settings");
-            if (settings.style.display === "none") {
-                settigns.style.display = "block";
-                help.style.display = "none";
-            } else {
-                settings.style.display = "none";
-                help.style.display = "block";
-            }
-        }
-    </script>
 {% endblock %}
 
 {% block main %}

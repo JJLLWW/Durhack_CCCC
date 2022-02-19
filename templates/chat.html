@@ -10,13 +10,14 @@
         Your conversation:
         <br>
         <textarea id="currentConvo" name="currentConvo" cols="100"></textarea>
+        {% conversation %}
         </textarea>
     </div>
     <br>
     <label for="newMessage">Input your message:</label>
     <form action="/sendMessage" method="post">
         <div>
-            <textarea style="resize:none" id="newMessage"name="newMessage" rows="4" cols="50" autofocus placeholder="Enter your message here...">
+            <textarea style="resize:none" id="newMessage" name="newMessage" rows="4" cols="50" autofocus placeholder="Enter your message here...">
             </textarea>
         </div>
         <button class="btn btn-success" type="submit">Send</button>

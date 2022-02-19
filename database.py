@@ -52,10 +52,11 @@ def verify_user(name, password):
     cursor.execute("""
     SELECT NAME FROM USER where NAME = ?
     """, [name])
+    print(name)
     for row in cursor:
         print("in")
         exist_name = (row[0])
-    #print(exist_name)
+    print(exist_name)
     if exist_name != "":
         print("exist")
         cursor.execute("""

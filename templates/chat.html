@@ -1,17 +1,30 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    {% endUser %}
+    Chatting
 {% endblock %}
 
 {% block main %}
     <div class="chatbox">
+        <br>
+        <br>
         Your conversation will appear here.
     </div>
+    <form>
+        
+    </form>
+    <label for="newMessage">Input your message:</label>
     <div>
-        <textarea id="newMessage">
-
+        <textarea style="resize:none" id="newMessage"name="newMessage" rows="4" cols="50" autofocus placeholder="Enter your message here...">
         </textarea>
-        <label for="newMessage">Input your message:</label>
     </div>
+    <script>
+        tinymce.init({
+          selector: "#mytextarea",
+          plugins: "emoticons",
+          toolbar: "emoticons",
+          toolbar_location: "bottom",
+          menubar: false
+        });
+      </script>
 {% endblock %}

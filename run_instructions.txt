@@ -1,0 +1,7 @@
+dependencies:
+pip3 install flask
+pip3 install mysql-connector-python
+ 
+to run:
+flask run
+

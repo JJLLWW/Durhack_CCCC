@@ -2,8 +2,11 @@
 Simple hello world
 """
 
-def main():
-    print("hello world")
+from flask import Flask
+import mysql.connector
 
-if __name__ == "__main__":
-    main()
+app = Flask(__name__)
+
+@app.route("/")
+def hello_world():
+    return "<p>Hello, World!</p>"

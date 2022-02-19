@@ -1,13 +1,24 @@
 from ast import Pass
 from collections import namedtuple
 import sqlite3
-import database2 as db2
 
-con = sqlite3.connect("database.db")
+def create_tables(cursor):
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS USER
+            (USERID INTEGER,
+            NAME TEXT,
+            PASSWORD TEXT,
+            LANGUAGEID INTEGER,
+            EMAIL TEXT);
+    """)
 
-cursor = con.cursor()
-
-db2.create_tables(cursor)
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS MESSAGES
+            (MESSAGEID INTEGER,
+            PASSWORD TEXT,
+            LANGUAGEID INTEGER,
+            EMAIL TEXT);
+    """)
 
 class user:
     def __init__(self, id, name, password, langid, email):
@@ -18,7 +29,7 @@ class user:
         self.email = email
         self.all = [self.id, self.name, self.Pass, self.langid, self.email]
 
-def add_user(Id, Name, Pass, Langid, Email):
+def add_user(Id, Name, Pass, Langid, Email, cursor):
     cursor.execute("""
         SELECT NAME FROM USER where NAME = ?
     """, [Name])
@@ -30,12 +41,10 @@ def add_user(Id, Name, Pass, Langid, Email):
     """, [Id, Name, Pass, Langid, Email])  
 
 #add_user(234, "Olivia", "olivia", "45456", "@olivia.com")   
-add_user(0, 'name2', 'pasass', 0, 'email.com')
-add_user(0, 'name', 'pasass2', 0, 'email.com')
-add_user(0, 'name', 'pasass2', 0, 'email.com')
 
 
-def get_user(name):
+
+def get_user(name, cursor):
     cursor.execute("""
         SELECT * FROM USER where NAME = ?
     """, [name])
@@ -53,7 +62,7 @@ def errmsg_from_code(code):
     elif code == ERR_WRONGPASS:
         print("wrong password")
 
-def verify_user(name, password):
+def verify_user(name, password, cursor):
     real_password = None
     cursor.execute("""
         SELECT NAME FROM USER where NAME = ?
@@ -74,9 +83,6 @@ def verify_user(name, password):
         else:
             return ERR_WRONGPASS
     return ERR_NOUSR
-
-code = verify_user("name2", "pasass")
-errmsg_from_code(code)
 
 #usr = get_user("name2")
 #print(usr.all)

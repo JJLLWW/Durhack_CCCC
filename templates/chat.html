@@ -10,7 +10,6 @@
         Your conversation:
         <br>
         <textarea id="currentConvo" name="currentConvo" cols="100"></textarea>
-        {% conversation %}
         </textarea>
     </div>
     <br>
@@ -22,4 +21,13 @@
         </div>
         <button class="btn btn-success" type="submit">Send</button>
     </form>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.js"></script>
+    <script>
+    console.log("asjdjksabdjkb")
+    const socket = io.connect("http://127.0.0.1:5000/");
+
+    socket.on("connect", function () {
+        socket.emit('join_chat')
+    });
+    </script>
 {% endblock %}

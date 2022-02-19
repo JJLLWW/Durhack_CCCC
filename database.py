@@ -98,11 +98,11 @@ def get_message(user1, user2, cursor):
 SUCCESS, ERR_NOUSR, ERR_WRONGPASS = 0, 1, 2
 def errmsg_from_code(code):
     if code == SUCCESS:
-        print("success")
+        return "User found"
     elif code == ERR_NOUSR:
-        print("no user")
+        return "Non-existent Username"
     elif code == ERR_WRONGPASS:
-        print("wrong password")
+        return "Incorrect password"
 
 def verify_user(name, password, cursor):
     real_password = None
@@ -119,10 +119,11 @@ def verify_user(name, password, cursor):
             real_password = row[0]
             print(f"password was {real_password}")
         if password == real_password:
-            return SUCCESS
+            print("user found")
+            return "USER FOUND"
         else:
-            return ERR_WRONGPASS
-    return ERR_NOUSR
+            return "INCORRECT PASSWORD"
+    return "NO USER FOUND"
 
 
 

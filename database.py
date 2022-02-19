@@ -45,7 +45,7 @@ def add_user(Name, Pass, Pref, Langid, Email, cursor):
         INSERT INTO US (NAME, PASSWORD, PREFERENCES, LANGUAGEID, EMAIL) VALUES(?, ?, ?, ?, ?)
         """, [Name, Pass, Pref, Langid, Email])  
     else:
-        print("user already exists")
+        return "user already exists"
 
 #add_user(234, "Olivia", "olivia", "45456", "@olivia.com")   
 

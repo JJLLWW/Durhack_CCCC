@@ -24,10 +24,7 @@ Session(app)
 @app.route("/", methods=["GET","POST"])
 @login_required
 def index():
-    if request.method == "POST":
-        pass
-    else:
-        render_template("home.html")
+    render_template("home.html")
 
 """ @socketio.on('join_chat')
 def join():
@@ -52,8 +49,37 @@ def login():
         print(username, password)
         verification = verify_user(username, password, cursor)
         if verification == "USER FOUND":
-            pass
+            flash("Welcome back " + username + "!")
+            session["username"] = username
+            return redirect("/")
     else:
         return render_template("login.html")
 
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    session.clear()
+    if request.method == "POST":
+        username = request.form.get("username")
+        if not username:
+            flash("Please enter a correct username")
+            return redirect("/register")
+        password = request.form.get("password")
+        confirmPass = request.form.get("confirmation")
+        if not password or not confirmPass:
+            flash("Please enter password(s)")
+            return redirect("/register")
+        email = request.form.get("email")
+        prefs = request.form.get("myTags")
+        lang = request.form.get
+        
+    else:
+        return render_template("signup.html")
+
+@app.route("/logout")
+@login_required
+def logout():
+    """ Log user out """
+    flash("Logged out.")
+    session.clear()
+    return redirect("/login")
 app.run()

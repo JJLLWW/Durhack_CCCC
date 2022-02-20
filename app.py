@@ -1,15 +1,21 @@
 """
-Simple hello world, on branch
+the server
 """
+
+# our code
 import database as db
+from database import verify_user, errmsg_from_code
+import translation as tl
+
+# third party
 import sqlite3
 from flask import Flask, flash, redirect, render_template, request, session, url_for
 from tempfile import mkdtemp
 from flask_session import Session
 from functools import wraps
 from assistingFunctions import login_required
-from database import verify_user, errmsg_from_code
 from flask_socketio import SocketIO
+
 
 con = sqlite3.connect("database.db", check_same_thread=False)
 cursor = con.cursor()
@@ -91,6 +97,10 @@ def logout():
     session.clear()
     return redirect("/login")
 
+@sio.on('connect')
+def on_client_connect():
+    print("client connected")
+    
 @sio.on('msg_sent')
 def on_msg_sent(json):
     txt = json['msg_txt']

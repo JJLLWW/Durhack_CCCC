@@ -5,7 +5,7 @@ con = sqlite3.connect("database.db")
 cursor = con.cursor()
 db.create_tables(cursor)
 
-db.verify_user( 'mynamename', 'pasass4', cursor)
+db.verify_user( 'myname', 'pasass4', cursor)
 #db.add_user( 'myname', 'pasass4', "horse", 0, 'email.com', cursor)
 #db.add_user( 'name', 'pasass2', "horse", 0, 'email.com', cursor)
 #db.add_user( 'name', 'pasass2', "horse", 0, 'email.com', cursor)

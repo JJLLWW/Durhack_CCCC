@@ -3,6 +3,9 @@ from collections import namedtuple
 import sqlite3
 from sys import prefix
 
+db = sqlite3.connect("database.db")
+cursor = db.cursor()
+
 def create_tables(cursor):
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS US
@@ -12,6 +15,7 @@ def create_tables(cursor):
             LANGUAGEID INTEGER,
             EMAIL TEXT);
     """)
+    db.commit()
 
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS M
@@ -20,6 +24,7 @@ def create_tables(cursor):
             MESSAGE TEXT,
             NUMBER INTEGER PRIMARY KEY AUTOINCREMENT);
     """)
+    db.commit()
 
 
 class user:
@@ -36,6 +41,7 @@ def add_user(Name, Pass, Pref, Langid, Email, cursor):
     cursor.execute("""
         SELECT NAME FROM US where NAME = ?
     """, [Name])
+    db.commit()
     # if there is an entry already we don't do anything
     for row in cursor:
         # if the name exists, check the password
@@ -43,9 +49,10 @@ def add_user(Name, Pass, Pref, Langid, Email, cursor):
     if exist_name == "":
         cursor.execute("""
         INSERT INTO US (NAME, PASSWORD, PREFERENCES, LANGUAGEID, EMAIL) VALUES(?, ?, ?, ?, ?)
-        """, [Name, Pass, Pref, Langid, Email])  
+        """, [Name, Pass, Pref, Langid, Email]) 
+        db.commit() 
     else:
-        print("user already exists")
+        return "user already exists"
 
 #add_user(234, "Olivia", "olivia", "45456", "@olivia.com")   
 
@@ -53,6 +60,7 @@ def add_message(user1, user2, text, cursor):
     cursor.execute("""
     INSERT INTO M (SENDER, RECEIVER, MESSAGE) VALUES(?, ?, ?)
     """, [user1, user2, text])
+    db.commit()
 
 def get_user(name, cursor):
     cursor.execute("""
@@ -101,11 +109,11 @@ def get_message(user1, user2, cursor):
 SUCCESS, ERR_NOUSR, ERR_WRONGPASS = 0, 1, 2
 def errmsg_from_code(code):
     if code == SUCCESS:
-        print("success")
+        return "User found"
     elif code == ERR_NOUSR:
-        print("no user")
+        return "Non-existent Username"
     elif code == ERR_WRONGPASS:
-        print("wrong password")
+        return "Incorrect password"
 
 def verify_user(name, password, cursor):
     print("verify")
@@ -138,7 +146,6 @@ def verify_user(name, password, cursor):
         else:
             return ERR_WRONGPASS
     
-
         
         
 

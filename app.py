@@ -47,10 +47,10 @@ def msg_sent(body):
 @login_required
 def chat():
     if request.method == "POST":
-        return render_template("chat.html", chat=chatSMS)
+        return redirect("/chat")
     else:
         """Call on messages.db table"""
-        return render_template("chat.html", chat=chatSMS)
+        return render_template("chat.html")
 
 @app.route("/changePassword", methods=["GET", "POST"])
 @login_required

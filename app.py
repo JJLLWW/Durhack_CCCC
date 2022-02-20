@@ -11,6 +11,8 @@ from flask_session import Session
 from functools import wraps
 from assistingFunctions import login_required
 from database import verify_user, errmsg_from_code, add_user
+from flask_socketio import SocketIO
+
 language = {
     "English ": 1,
     "French": 2,
@@ -27,6 +29,8 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 app.secret_key = b'P\x87\xfc\xa9\xe6qQ~)8\x90D\x11\n\xb9\xa1'
 Session(app)
+sio = SocketIO(app)
+
 
 db.add_user("jack wright", "pass", "none", 0, "jackwright@gmail.com", cursor)
 
@@ -138,4 +142,10 @@ def logout():
     flash("Logged out.")
     session.clear()
     return redirect("/login")
+
+@sio.on('msg_sent')
+def on_msg_sent(json):
+    txt = json['msg_txt']
+    sio.emit('msg_from_serv', {'text': txt})
+
 app.run()

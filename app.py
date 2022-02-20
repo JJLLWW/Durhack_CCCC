@@ -3,13 +3,13 @@ Simple hello world, on branch
 """
 import database as db
 import sqlite3
-from socket import SocketIO, socket
 from flask import Flask, flash, redirect, render_template, request, session, url_for
 from tempfile import mkdtemp
 from flask_session import Session
 from functools import wraps
 from assistingFunctions import login_required
 from database import verify_user, errmsg_from_code
+from flask_socketio import SocketIO
 
 con = sqlite3.connect("database.db", check_same_thread=False)
 cursor = con.cursor()
@@ -20,6 +20,7 @@ db.add_user("jack wright", "pass", "none", 0, "jackwright@gmail.com", cursor)
 db.add_user("jack wrong", "pass", "none", 0, "jackwrong@gmail.com", cursor)
 
 app = Flask(__name__)
+sio = SocketIO(app)
 app.config["SESSION_FILE_DIR"] = mkdtemp()
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
@@ -30,14 +31,6 @@ Session(app)
 @login_required
 def index():
     return render_template("home.html")
-
-""" @socketio.on('join_chat')
-def join():
-    print("use")
-
-@socketio.on('msg_sent')
-def msg_sent(body):
-    print("sent message", str(body)) """
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -98,5 +91,12 @@ def logout():
     session.clear()
     return redirect("/login")
 
+@sio.on('msg_sent')
+def on_msg_sent(json):
+    print("hello")
+    txt = json['msg_txt']
+    print(txt)
+    sio.emit('msg_from_serv', {'data': txt})
+
 if __name__ == "__main__":
-    app.run()
+    app.run(port=5000)

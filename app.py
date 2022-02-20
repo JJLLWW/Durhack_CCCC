@@ -9,15 +9,17 @@ from flask import Flask, flash, redirect, render_template, request, session, url
 from tempfile import mkdtemp
 from flask_session import Session
 from functools import wraps
-from assistingFunctions import login_required
+from assistingFunctions import login_required, translateThis
+from googletrans import Translator
 from database import verify_user, errmsg_from_code, add_user
 from flask_socketio import SocketIO
+trans = Translator()
 
 language = {
-    "English ": 1,
-    "French": 2,
-    "Spanish": 3,
-    "Russian": 4
+    "en ": 1,
+    "fr": 2,
+    "sp": 3,
+    "ru": 4
 }
 
 con = sqlite3.connect("database.db", check_same_thread=False)
@@ -32,8 +34,8 @@ Session(app)
 sio = SocketIO(app)
 
 
-db.add_user("jack wright", "pass", "none", 0, "jackwright@gmail.com", cursor)
-
+db.add_user("jack wright", "pass", "none", 1, "jackwright@gmail.com", cursor)
+db.add_user("jeremy roy", "pass2", "none", 1, "jeremynroy@gmail.com", cursor)
 @app.route("/", methods=["GET","POST"])
 @login_required
 def index():
@@ -86,7 +88,7 @@ def help():
         return redirect("/")
     else:
         """get user from database and pass in variables, for language and prefs"""
-        return render_template("help.html", language=language, prefs=prefs)
+        return render_template("help.html")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -145,7 +147,10 @@ def logout():
 
 @sio.on('msg_sent')
 def on_msg_sent(json):
-    txt = json['msg_txt']
+    message = json['msg_txt']
+    print("message is " + message)
+    txt = translateThis(message, "fr")
+    print("text is " + txt)
     sio.emit('msg_from_serv', {'text': txt})
 
 app.run()

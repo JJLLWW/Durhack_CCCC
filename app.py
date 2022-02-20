@@ -93,10 +93,8 @@ def logout():
 
 @sio.on('msg_sent')
 def on_msg_sent(json):
-    print("hello")
     txt = json['msg_txt']
-    print(txt)
-    sio.emit('msg_from_serv', {'data': txt})
+    sio.emit('msg_from_serv', {'text': txt})
 
 if __name__ == "__main__":
     app.run(port=5000)

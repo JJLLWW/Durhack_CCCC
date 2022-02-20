@@ -38,14 +38,17 @@
         socket.emit('join_chat')
     });
 
-    socket.on('msg_from_serv', function () {
-        console.log("89y31289y893y8293y89321y")
+    socket.on('msg_from_serv', function (json) {
+        console.log(json)
+        var chatbox = document.getElementById("currentConvo");
+        chatbox.value += json.text + "\n"
     })
 
     var btn = document.getElementById("btn-msg");
     btn.addEventListener("click", function() {
         console.log("button clicked")
         var msg_txt = document.getElementById("newMessage").value
+        document.getElementById("newMessage").value = ""
         socket.emit('msg_sent', {"msg_txt" : msg_txt})
     })
     </script>

@@ -11,9 +11,14 @@ from functools import wraps
 from assistingFunctions import login_required
 from database import verify_user, errmsg_from_code
 
-con = sqlite3.connect("database.db")
+con = sqlite3.connect("database.db", check_same_thread=False)
 cursor = con.cursor()
 db.create_tables(cursor)
+
+# add stock users
+db.add_user("jack wright", "pass", "none", 0, "jackwright@gmail.com", cursor)
+db.add_user("jack wrong", "pass", "none", 0, "jackwrong@gmail.com", cursor)
+
 app = Flask(__name__)
 app.config["SESSION_FILE_DIR"] = mkdtemp()
 app.config["SESSION_PERMANENT"] = False
@@ -24,7 +29,7 @@ Session(app)
 @app.route("/", methods=["GET","POST"])
 @login_required
 def index():
-    render_template("home.html")
+    return render_template("home.html")
 
 """ @socketio.on('join_chat')
 def join():
@@ -48,12 +53,22 @@ def login():
             return redirect("/login")
         print(username, password)
         verification = verify_user(username, password, cursor)
-        if verification == "USER FOUND":
+        if verification == db.SUCCESS:
             flash("Welcome back " + username + "!")
             session["username"] = username
             return redirect("/")
+        elif verification == db.ERR_NOUSR:
+            flash("Username " + username + " is invalid")
+            return redirect("/login")
+        else:
+            flash("Password was incorrect")
+            return redirect("/login")
     else:
         return render_template("login.html")
+
+@app.route("/chat", methods=["GET", "POST"])
+def chat():
+    return render_template("chat.html")
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -82,4 +97,6 @@ def logout():
     flash("Logged out.")
     session.clear()
     return redirect("/login")
-app.run()
+
+if __name__ == "__main__":
+    app.run()
